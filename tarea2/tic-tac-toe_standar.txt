@@ -1,0 +1,62 @@
+El tic-tac-toe o el juego del gato se trata de 
+
+
+## Mi protocolo de tic-tac-toe 
+
+
+# Necesitamos conocer:
+Jugador en turno: 1 bit
+fin de partida: 2 bits
+siguiente movimiento: 4 bits
+matriz posiciones: 3x3 casillas de almenos dos bits
+Nombre de jugadores: vector con dos valores - String con 10 a 40 caracteres para cada nombre, posicion cero para el jugador cero y uno para el uno.
+
+Las casillas se mapean de arriba hacia abajo de izquierda a derecha, de 0 al 8 se enumeran las casillas
+0|1|2
+-----
+3|4|5
+-----
+6|7|8
+
+El jugador "0" siempre es el circulo, el jugador "1" seimpre es la "X", es decir el cliente siempre se dibuja como la "X" y el servidor siempre como el circulo
+
+El fin de la partida puede tener 4 valores: "0" partida todavia en proceso, "1" gano el jugador "0" o el servidor, "2" gano el jugador "1" o el cliente y "3" empate. Primero se verifica que haya terminado el juego es decir que el valor de la variable de fin de partida tenga un valor diferente a 0, despues se verifica que haya sido empate es decir que la variable tenga el valor 3, de no ser asi se 
+
+
+Para conocer el jugador ganador o el que tiene el turno, solo se necesita 1 bit, donde "0" se asigna al programa servidor y "1" al cliente.
+
+Se necesita una unidad logica que verifique:
+   Quien gano
+   Quien tiene el turno
+   Si hay empate
+
+En la matriz de 3x3 los siguientes numeros representan: "0" es una casilla vacia, "1" para el jugador "0", "2" para el jugador "1".
+Example:
+0|1|2
+-----
+1|2|0
+-----
+2|0|0
+
+# Comunicacion
+
+    La comunicacion se lleva a cabo por medio de sockets
+
+    Al inicio de la partida se pasan por el stream los datos:  
+        Turno: 1 bit
+        Nombre de jugadores: Vector con dos valores - String con 10 a 40 caracteres para cada nombre
+
+    Despues de cada movimiento se pasan por el stream los datos:
+        Fin de partida: 2 bits
+        Siguiente movimiento: 4 bits
+
+    Si se pierde conexion de red, la partida queda en empate
+
+# Cliente servidor
+    Este juego es un perfecto programa cliente servidor puesto que es un juego de exacto dos personas.
+
+# Inicio del juego
+    El turno incial para los jugadores se genera de forma aleatoria.
+
+# Al terminar la partida
+    Se decide un ganador y se empieza un nuevo juego
