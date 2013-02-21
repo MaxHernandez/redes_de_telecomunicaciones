@@ -1,0 +1,80 @@
+#### Ethernet
+
+Propósitos:
+Permite a un conjunto de computadoras compartir un canal de comunicación a nivel fisico.
+
+Características:
+El sistema Ethernet consiste de tres elementos básicos:
+Medio físico usado para llevar señales Ethernet entre computadoras
+Un conjunto de reglas de control para compartir el un canal 
+Una trama de Ethernet que consiste de un conjunto de bits estandarizados para llevar información por el sistema.
+
+#### Vlan - Virtual Local Area Network
+Propósitos:
+Permite a una red ser particionada para crear múltiples dominios Broadcast.
+
+Características:
+1. Puede segmentar una red en varias subredes
+2. Puede filtrad señales Broadcast
+3. Administración del flujo de trafico en una red
+4. Provee cierta seguridad en una red local
+
+#### IP - Internet Protocol
+Propósitos:
+Su propósito dar una dirección a las redes.
+
+Características:
+1. Asigna una dirección a cada dispositivo que utilice una red en el mundo.
+2. Cada dirección es comúnmente una dirección de 4 bytes IPv4
+3. En los últimos tiempos se implementaron direcciones de 16 IPV6 bytes debido a la escases de las anteriores.
+4. Las direcciones se expresan en hexadecimal
+
+#### TCP - Transmission Control Protocol
+Propositos:
+proporciona un suministro de Stream fiable y servicio de conexión virtual a las aplicaciones
+
+Características:
+1. Provee un Stream para transferencia de datos
+2. Confiabilidad
+3. Eficiente flujo de control
+4. Operaciones full-duplex y multiplexadas
+
+#### HTTP - Hypertext Transfer Protocol
+Propositos:
+Permite la distribución, y colaboración para compartir información de hipermedia.
+
+Características:
+1. Es un protocolo cliente/servidor
+2. Permite comunicación entre diferentes dispositivos para protocolos como SMTP, NNTP y FTP
+3. Simplifica la implementación de agentes de usuario
+
+#### DNS - Domain Name System
+Propósitos:
+Es un directorio distribuido de direcciones de internet
+
+Características:
+1. Especifica la sintaxis y reglas para un dominio de internet.
+2. Especifica la implementación del directorio distribuido de direcciones.
+3. Delega responsabilidades de forma descentralizada y jerárquica para partes del nombre de dominio.
+
+#### DHCP- Dynamic Host Configuration Protocol
+Propósitos:
+Permitir a los administradores de red gestionar de forma centralizada y automatizar la asignación de direcciones IP en una red
+
+Características:
+1. Maneja un lapso de tiempo en que arrenda una dirección a una computadora
+2. Permite reciclar fácilmente direcciones IP
+3. Permite dar direcciones estáticas a servicios Web que lo requieran
+4. Tiene la capacidad de reconfigurar una red si hacen falta servicios Web
+
+#### NAT - IP Network Address Translator
+Propósitos:
+Permite traducir una dirección privada de una red local a una dirección unica de una red global
+
+Características:
+1. Cada petición que se haga tiene que pasar por una red NAT
+2. Puede instarse en un host o router sin cambiar su configuración
+
+Referencias:
+http://www.javvin.com/
+http://www.edrawsoft.com/Network-Protocol.php
