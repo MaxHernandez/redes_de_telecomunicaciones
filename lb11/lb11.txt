@@ -1,0 +1,33 @@
+Investigar
+
+- Mecanismos para interceptar comunicaciones satelitales
+- Razones para interceptar comunicaciones satelitales
+- Maneras de proteger comunicaciones satelitales
+
+##### Publicacion
+
+- Introduccion
+- Que es comunicacion satelital
+- ¿Para que son utilizadas las comunicaciones satelitales? #http://www.suparco.gov.pk/pages/applications-satellite.asp
+Para entender las razones para interceptar la comunicación sátelital necesitamos saber que usos se le dan
+- ¿Como funciona una transmisión satelital? # http://satelites.site90.net/Satelites/sistemas_comunicacion.html
+- ¿Como interceptar una transmision satelital? # http://www.forbes.com/2010/02/02/hackers-cybercrime-cryptography-technology-security-satellite.html
+- Seguridad
+  *Encriptación http://gmr.crypto.rub.de/
+    * GMR-1 y GMR-2 
+- Ataques conocidos # http://securityaffairs.co/wordpress/2317/hacking/hacking-satellite-communications-and-its-implication.html
+
+
+Referencias:
+http://securityaffairs.co/wordpress/2317/hacking/hacking-satellite-communications-and-its-implication.html
+http://www.ccs.neu.edu/home/noubir/publications/NA99.pdf
+http://spacejournal.ohio.edu/issue6/threats2.html
+http://www.nice.com/Intelligence-lea/satellite-interception
+http://www.sans.edu/research/security-laboratory/article/satellite-dos
+http://www.forbes.com/2010/02/02/hackers-cybercrime-cryptography-technology-security-satellite.html
+
+http://www.stratign.com/feature_article.asp
+http://www.defentek.com/orbital_intelligence_satellite_interception.pdf
+
+http://www.youtube.com/watch?v=yxYzjHBKNcA&NR=1&feature=fvwp
+

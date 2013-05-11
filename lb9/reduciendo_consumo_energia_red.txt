@@ -1,0 +1,11 @@
+Adaptación del ritmo de la red
+
+Modelo y suposiciones 
+
+Bueno se basa en dos suposiciones muy simples si haces que el componente trabaje mas lento gastara menos energía, 
+El modelo busca que cada conexión entre componentes de la red tenga una rito de transmisión independiente del otro.
+En este modelo $/ delta$ es el tiempo que tarda en pasar de un ritmo a otro.
+
+Una estrategia optima
+
+Cuando el ritmo de llegada de los paquetes es uniforme se busca reducir la cantidad de energía mandando los paquetes  aun ritmo promedio al de llegada, pero si el ritmo de llegada no es uniforme esto puede traer problemas, por lo tanto lo que se busca es un algoritmo uniforme que minimice el consumo de la energía dependiendo de los ritmos de llegada de paquetes.

@@ -1,0 +1,209 @@
+#! /usr/bin/python
+from math import log
+from random import randint
+from subprocess import call
+from sys import argv
+
+def generar_hipercubo(dimensiones): 
+    numero_nodos = 2**dimensiones
+    grafo = dict()
+    for i in range(numero_nodos):
+        for j in range(numero_nodos):
+            distancia = i^j
+            if distancia == 0:
+                grafo[i, j] = 0
+                continue
+
+            distancia = log(distancia, 2)
+            if distancia%1 == 0.0 : # Terminar, si distancia binaria entre ambos es 1 
+                grafo[i, j] = 1
+            else:
+                grafo[i, j] = 0
+    return grafo, numero_nodos
+
+def generar_anillo(numero_nodos):
+    grafo = dict()
+    for i in range(numero_nodos):
+        for j in range(numero_nodos):
+            if j-i  == 1.0 or (i == numero_nodos-1 and j == 0): # Terminar, si distancia binaria entre ambos es 1 
+                grafo[i, j] = 1
+            else:
+                grafo[i, j] = 0
+    return grafo, numero_nodos
+
+def generar_simulacion(name='simulacion', dimensiones = 2, time_simulation=30, nodos = 3, topology = 'hipercubo'):
+    if topology == 'hipercubo':
+        grafo, numero_nodos = generar_hipercubo(dimensiones)
+    elif topology == 'anillo':
+        grafo = generar_anillo(nodos)[0]
+        numero_nodos = nodos
+    else:
+        return
+
+    nodos = ''
+    for n in range(numero_nodos):
+        nodos += 'set node'+str(n)+' [$simulation node]\n'
+
+    conexiones = ''
+    for i in range(numero_nodos):
+        for j in range(numero_nodos):
+            if grafo[i, j] == 1:
+                conexiones += '$simulation duplex-link $node'+str(i)+' $node'+str(j)+' 1Mb 10ms DropTail\n'
+
+
+    conexiones_udp = ''
+    conexiones_nodos = list()
+    numero_conexiones = 3
+    for i in range(numero_conexiones):
+        nodos_udp = [None, None]
+        nodos_udp[0] = randint(0, numero_nodos-1)
+        nodos_udp[1] = randint(0, numero_nodos-1)
+        while nodos_udp[0] == nodos_udp[1]:
+            nodos_udp[1] = randint(0, numero_nodos-1)
+        conexiones_nodos.append(nodos_udp)
+            
+        conexiones_udp += """
+        set udp%d [new Agent/UDP]
+        $simulation attach-agent $node%d $udp%d
+
+        set null%d [new Agent/Null]
+        $simulation attach-agent $node%d $null%d
+        $simulation connect $udp%d $null%d
+        $udp%d set fid_ %d
+        """%(i, nodos_udp[0], i, i, nodos_udp[1], i, i, i, i, i)
+
+    exponential = """
+    set exp [new Application/Traffic/Exponential]
+    $exp attach-agent $udp0
+    $exp set type_ Exponential
+    $exp set packet_size_ 1000
+    $exp set rate_ 1mb
+    """
+
+    pareto = """                                                                                                                           
+    set par [new Application/Traffic/Pareto]
+    $par attach-agent $udp1
+    $par set type_ Pareto
+    $par set packet_size_ 1000
+    $par set rate_ 1mb
+    """
+
+    cbr = """                                                                                                                           
+    set cbr [new Application/Traffic/CBR]
+    $cbr attach-agent $udp2
+    $cbr set type_ CBR
+    $cbr set packet_size_ 1000
+    $cbr set rate_ 1mb
+    """    
+#    conexiones_ftp = ''
+#    for i in range(numero_conexiones):
+#        conexiones_ftp += """
+#        set ftp%d [new Application/FTP]
+#        $ftp%d attach-agent $tcp%d
+#        $ftp%d set type_ FTP
+#        """%(i, i, i, i)
+    
+
+    tiempos_simulaciones = """
+    $simulation at %0.2f "$exp start"
+    $simulation at %0.2f "$exp stop"
+    $simulation at %0.2f "$par start"
+    $simulation at %0.2f "$par stop"
+    $simulation at %0.2f "$cbr start"
+    $simulation at %0.2f "$cbr stop"
+    """%(0, time_simulation, 0, time_simulation, 0, time_simulation)
+#    for i in range(numero_conexiones):
+#        tiempos_simulaciones += '$simulation at %0.2f "$ftp%d start"\n' % (0.0, i)
+#        tiempos_simulaciones += '$simulation at %0.2f "$ftp%d stop"\n' % (time_simulation, i)
+
+    final_simulacion = '$simulation at '+str(float(time_simulation))+' "finish"'
+
+    colors_simulation = ''
+    for i in range(numero_conexiones):
+        colors_simulation += '$simulation color %d #%02X%02X%02X \n'%(i, randint(0,255), randint(0,255), randint(0,255))
+
+    # aqui se organiza la simulacion 
+    simulacion = ("set simulation [new Simulator]",
+                  """
+set simulation_file [open output.nam w]
+$simulation namtrace-all $simulation_file
+proc finish {} {
+        global simulation simulation_file
+        $simulation flush-trace
+        close $simulation_file
+        exec nam output.nam &
+        exit 0
+    }
+    """,
+                  colors_simulation,
+                  nodos,
+                  conexiones,
+                  conexiones_udp,
+                  exponential,
+                  pareto,
+                  cbr,
+                  tiempos_simulaciones,
+                  final_simulacion,
+                  "$simulation run"
+)
+
+    fl = open(name+'.tcl', 'w')
+    for i in simulacion:
+        fl.write(i+'\n')
+    fl.close()
+
+    call(['ns', name+'.tcl'])
+
+    distrib = ['exp', 'pareto', 'cbr']
+    for i in range(3):
+        thr_fl = 'throughput%d.awk'%(i)
+        fl = open(thr_fl, 'w')
+        fl.write("""
+BEGIN {
+    tiempo_simulacion = 0
+    paquetes_enviados = 0
+    paquetes_entregados = 0
+    datos_entregados = 0
+    nodo_origen = %d
+    nodo_destino = %d
+}
+
+{
+    if ("r" == $1 && "%s" == $9 && nodo_destino == $7){
+paquetes_entregados += 1
+datos_entregados += $11-20
+tiempo_simulacion = $3
+    }
+
+    if ("r" == $1 && "%s" == $9 && nodo_origen == $5){
+paquetes_enviados += 1
+    }
+}
+
+END {
+    printf("%%g\\n", paquetes_enviados)
+    printf("%%g\\n", paquetes_entregados)
+    printf("%%g\\n", (datos_entregados/tiempo_simulacion)*(8/1000))
+}
+"""%(conexiones_nodos[i][0], conexiones_nodos[i][1], distrib[i], distrib[i]))
+        fl.close()
+
+        call(['awk', '-f', thr_fl, 'output.nam'])
+
+def main():
+    if len(argv) > 1:
+        if argv[1] == 'hipercubo':
+            if len(argv) == 3:
+                generar_simulacion(dimensiones = int(argv[2]), topology='hipercubo')
+            else:
+                generar_simulacion(topology='hipercubo')
+        if argv[1] == 'anillo':
+            if len(argv) == 3:
+                generar_simulacion(nodos = int(argv[2]), topology='anillo')
+            else:
+                generar_simulacion(topology='anillo')
+
+    else:
+        generar_simulacion()
+
+main()

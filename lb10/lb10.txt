@@ -1,0 +1,34 @@
+Seguridad en redes de telefonía
+
+Telefonia móvil 
+
+    CMEA (Algoritmo de encripción de mensajes de celular)
+        Este es un algoritmo de tipo block chipher(cifrado por bloques)usado por los estados unidos para telefonos móviles, este algoritmo nacio en 1991 y se ha demostrado que tiene grandes debilidades, de el descienden algoritmos como ECMEA y SCEMA.
+
+    ORYX
+        Es el algoritmo que utilizado para cifrar los datos enviados a través de los teléfonos celulares digitales. Es un stream cipher basado en tres escructuras de 32-bits. El equipo de criptografos Counterpane Systems (David Wagner, John Kelsey y Bruce Schneier) ha desarrollado un ataque a ORYX que requiere aproximadamente 24 bytes de texto plano conocido y unos 216 supuestos iniciales.
+
+    A5/1
+        Este es un algoritmo tipo stream cipher usado usado para proporcionar privacidad en la comunicación al aire libre, este algoritmo cifra la conversación entre 2 terminales GSM cuando el mensaje viaja por el aire. Inicialmente fue mantenido en secreto pero llegó al dominio público debido a sus debilidades y a la ingeniería inversa. Varias debilidades serias han sido identificadas en el algoritmo, En 2006, Eli Biham y Nathan Keller hicieron demostraciones de ataques contra A5/1, A5/3 que permiten al atacante atacar un teléfono GSM y descifrar la conversación en tiempo real, o apenas con un poco de retraso.
+
+    PKCS5
+        Muy utilizado en android y es un estandar de cifrado de contraseñas, este algoritmo establece un sistema de padding para cifrados por bloque que consiste en rellenar con tantos bytes como se necesiten y el valor de los bytes será el mismo que el número de los bytes introducidos. Por definición este sistema sólo funciona para cifrados con bloques de tamaño menor que 256 que es el valor máximo que puede tener un byte.
+
+    AES
+        Es un algoritmo de cifrado por bloques utilizado en android, junto con PKCS5 y CBC son los algoritmos implementados por defecto en las librerias de android, además este algoritmo fue adoptado como un estándar de cifrado por el gobierno de los Estados Unidos. Este algoritmo utiliza una clave de cifrado que puede ser 128, 192 o 256 bits de largo, y se aplica en bloques, cada uno de los cuales es de 128 bits de largo. El algoritmo AES comienza copiando cada bloque de 16 bits en una matriz bidimensional llamada el Estado, para crear una matriz de bytes de 4x4.
+
+Telefono fijo (land line)
+
+SRTP
+
+Este protocolo fue diseñado para proporcionar cifrado, autenticación de mensajes y la integridad, y protección contra la reproducción de los datos del protocolo en si,  en aplicaciones tanto unicast y multicast. Fue desarrollado por un pequeño equipo del protocolo IP y expertos criptográficos de Cisco. Este protocolo tambien es utilizado para proveer seguridad en telefonia de tipo VoIP.
+
+SSH 
+
+Este es un protocolo de red de cifrado para la comunicación segura de datos, servicios de shell remotos o ejecución de comandos y otros servicios de red segura entre dos ordenadores que se conectan en red, a través de un canal seguro a través de una red insegura, un servidor y un cliente. Este algoritmo es utilizado para administrar dispositivos que hacen que funcione un servicio VoIP.
+
+References:
+http://en.wikipedia.org
+http://www.enseignement.polytechnique.fr/profs/informatique/Francois.Morain/Master1/Crypto/projects/WaScKe97.pdf
+http://www.motorola.com/sites/motodev/resources/best_practices_for_android_encryption.pdf
+http://devconnect.avaya.com/public/download/MARKET/DEVX/BestPracticesToDevelopSecureVoIPApplications.pdf
